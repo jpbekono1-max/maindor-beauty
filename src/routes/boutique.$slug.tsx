@@ -29,8 +29,29 @@ function ProductPage() {
   const [qty, setQty] = useState(1);
   const [color, setColor] = useState(product.colors?.[0]);
   const [length, setLength] = useState(product.lengths?.[0]);
+  const densities = ["150%", "180%", "200%"];
+  const [density, setDensity] = useState<string | undefined>(
+    product.category.includes("Perruque") || product.category === "Lace Frontal" ? "180%" : undefined
+  );
 
-  const wa = encodeURIComponent(`Bonjour Main d'or, je souhaite commander : ${product.name} (${formatFCFA(product.price)})${color ? ` — couleur : ${color}` : ""}${length ? ` — longueur : ${length}` : ""} × ${qty}`);
+  const total = product.price * qty;
+  const waLines = [
+    `Bonjour Main d'or Beauty 👋`,
+    `Je souhaite commander :`,
+    ``,
+    `• Produit : ${product.name}`,
+    `• Référence : ${product.slug}`,
+    `• Prix unitaire : ${formatFCFA(product.price)}`,
+    color ? `• Couleur : ${color}` : null,
+    length ? `• Longueur : ${length}` : null,
+    density ? `• Densité : ${density}` : null,
+    `• Quantité : ${qty}`,
+    ``,
+    `💰 Total : ${formatFCFA(total)}`,
+    ``,
+    `Merci de me confirmer la disponibilité et les modalités de livraison.`,
+  ].filter(Boolean).join("\n");
+  const wa = encodeURIComponent(waLines);
 
   return (
     <>
@@ -76,6 +97,9 @@ function ProductPage() {
                 {product.lengths && (
                   <Selector label="Longueur" value={length} setValue={setLength} options={product.lengths}/>
                 )}
+                {density && (
+                  <Selector label="Densité" value={density} setValue={setDensity} options={densities}/>
+                )}
                 <div>
                   <p className="text-xs uppercase tracking-widest mb-2" style={{color:"var(--gold-dark)"}}>Quantité</p>
                   <div className="inline-flex items-center border border-border rounded-sm">
@@ -84,6 +108,11 @@ function ProductPage() {
                     <button onClick={() => setQty(qty+1)} className="h-11 w-11 inline-flex items-center justify-center hover:bg-muted"><Plus className="h-4 w-4"/></button>
                   </div>
                 </div>
+              </div>
+
+              <div className="mt-6 flex items-baseline justify-between border-t border-border pt-4">
+                <span className="text-xs uppercase tracking-widest text-muted-foreground">Total</span>
+                <span className="font-display text-2xl" style={{color:"var(--gold-dark)"}}>{formatFCFA(total)}</span>
               </div>
 
               <div className="mt-8 grid sm:grid-cols-2 gap-3">
