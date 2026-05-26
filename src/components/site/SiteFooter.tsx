@@ -30,9 +30,9 @@ export function SiteFooter() {
         <div>
           <h4 className="font-display text-lg mb-4 text-gradient-gold">Contact</h4>
           <ul className="space-y-3 text-sm opacity-80">
-            <li className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 text-primary"/> Yaoundé, Cameroun</li>
-            <li className="flex items-start gap-2"><Phone className="h-4 w-4 mt-0.5 text-primary"/> +237 693 881 451</li>
-            <li className="flex items-start gap-2"><Mail className="h-4 w-4 mt-0.5 text-primary"/> contact@maindorbeauty.cm</li>
+            <li className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 text-primary"/><span>Yaoundé, Cameroun</span></li>
+            <li className="flex items-start gap-2"><Phone className="h-4 w-4 mt-0.5 text-primary"/><span>+237 693 881 451</span></li>
+            <li className="flex items-start gap-2"><Mail className="h-4 w-4 mt-0.5 text-primary"/><span>contact@maindorbeauty.cm</span></li>
           </ul>
         </div>
         <div>

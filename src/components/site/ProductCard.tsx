@@ -20,6 +20,7 @@ export function ProductCard({ product }: { product: Product }) {
       <div className="p-4 space-y-2">
         <div className="flex items-center gap-0.5">
           {Array.from({length:5}).map((_,i) => <Star key={i} className={`h-3 w-3 ${i < product.rating ? "fill-primary text-primary" : "text-muted-foreground/30"}`}/>)}
+          <span className="ml-1 text-[10px] text-muted-foreground">({product.reviews})</span>
         </div>
         <h3 className="font-display text-lg leading-tight line-clamp-1">{product.name}</h3>
         <p className="text-xs text-muted-foreground line-clamp-1">{product.description}</p>
