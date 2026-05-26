@@ -97,6 +97,9 @@ function ProductPage() {
                 {product.lengths && (
                   <Selector label="Longueur" value={length} setValue={setLength} options={product.lengths}/>
                 )}
+                {density && (
+                  <Selector label="Densité" value={density} setValue={setDensity} options={densities}/>
+                )}
                 <div>
                   <p className="text-xs uppercase tracking-widest mb-2" style={{color:"var(--gold-dark)"}}>Quantité</p>
                   <div className="inline-flex items-center border border-border rounded-sm">
@@ -105,6 +108,11 @@ function ProductPage() {
                     <button onClick={() => setQty(qty+1)} className="h-11 w-11 inline-flex items-center justify-center hover:bg-muted"><Plus className="h-4 w-4"/></button>
                   </div>
                 </div>
+              </div>
+
+              <div className="mt-6 flex items-baseline justify-between border-t border-border pt-4">
+                <span className="text-xs uppercase tracking-widest text-muted-foreground">Total</span>
+                <span className="font-display text-2xl" style={{color:"var(--gold-dark)"}}>{formatFCFA(total)}</span>
               </div>
 
               <div className="mt-8 grid sm:grid-cols-2 gap-3">
