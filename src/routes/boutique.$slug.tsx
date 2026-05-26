@@ -29,8 +29,29 @@ function ProductPage() {
   const [qty, setQty] = useState(1);
   const [color, setColor] = useState(product.colors?.[0]);
   const [length, setLength] = useState(product.lengths?.[0]);
+  const densities = ["150%", "180%", "200%"];
+  const [density, setDensity] = useState<string | undefined>(
+    product.category.includes("Perruque") || product.category === "Lace Frontal" ? "180%" : undefined
+  );
 
-  const wa = encodeURIComponent(`Bonjour Main d'or, je souhaite commander : ${product.name} (${formatFCFA(product.price)})${color ? ` — couleur : ${color}` : ""}${length ? ` — longueur : ${length}` : ""} × ${qty}`);
+  const total = product.price * qty;
+  const waLines = [
+    `Bonjour Main d'or Beauty 👋`,
+    `Je souhaite commander :`,
+    ``,
+    `• Produit : ${product.name}`,
+    `• Référence : ${product.slug}`,
+    `• Prix unitaire : ${formatFCFA(product.price)}`,
+    color ? `• Couleur : ${color}` : null,
+    length ? `• Longueur : ${length}` : null,
+    density ? `• Densité : ${density}` : null,
+    `• Quantité : ${qty}`,
+    ``,
+    `💰 Total : ${formatFCFA(total)}`,
+    ``,
+    `Merci de me confirmer la disponibilité et les modalités de livraison.`,
+  ].filter(Boolean).join("\n");
+  const wa = encodeURIComponent(waLines);
 
   return (
     <>
