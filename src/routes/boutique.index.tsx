@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { PageHeader } from "@/components/site/PageHeader";
 import { ProductCard } from "@/components/site/ProductCard";
 import { catalog } from "@/data/products";
-import { SlidersHorizontal, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, SlidersHorizontal, X } from "lucide-react";
 
 export const Route = createFileRoute("/boutique/")({
   component: BoutiquePage,
@@ -15,6 +15,7 @@ export const Route = createFileRoute("/boutique/")({
 
 const categories = ["Tout", "Perruques Naturelles", "Perruques Synthétiques", "Lace Frontal", "Accessoires", "Soins", "Onglerie"];
 const textures = ["Lisse", "Bouclé", "Frisé", "Afro", "Body Wave"];
+const PER_PAGE = 9;
 
 function BoutiquePage() {
   const [cat, setCat] = useState("Tout");
@@ -22,6 +23,7 @@ function BoutiquePage() {
   const [max, setMax] = useState(500000);
   const [sort, setSort] = useState("new");
   const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(1);
 
   const list = useMemo(() => {
     let l = [...catalog];
@@ -30,9 +32,15 @@ function BoutiquePage() {
     l = l.filter(p => p.price <= max);
     if (sort === "asc") l.sort((a,b) => a.price - b.price);
     if (sort === "desc") l.sort((a,b) => b.price - a.price);
-    if (sort === "best") l.sort((a,b) => b.rating - a.rating);
+    if (sort === "best") l.sort((a,b) => b.reviews - a.reviews);
     return l;
   }, [cat, tex, max, sort]);
+
+  useEffect(() => { setPage(1); }, [cat, tex, max, sort]);
+
+  const totalPages = Math.max(1, Math.ceil(list.length / PER_PAGE));
+  const currentPage = Math.min(page, totalPages);
+  const paginated = list.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
 
   const FiltersBody = (
     <div className="space-y-8">
@@ -77,9 +85,50 @@ function BoutiquePage() {
                 </select>
               </div>
             </div>
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {list.map(p => <ProductCard key={p.slug} product={p}/>)}
-            </div>
+            {paginated.length === 0 ? (
+              <div className="text-center py-20 text-muted-foreground">
+                Aucun produit ne correspond à vos filtres.
+              </div>
+            ) : (
+              <>
+                <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                  {paginated.map(p => <ProductCard key={p.slug} product={p}/>)}
+                </div>
+                {totalPages > 1 && (
+                  <div className="mt-12 flex items-center justify-center gap-2">
+                    <button
+                      onClick={() => setPage(p => Math.max(1, p - 1))}
+                      disabled={currentPage === 1}
+                      className="h-10 w-10 inline-flex items-center justify-center rounded-sm border border-border disabled:opacity-30 hover:border-primary transition"
+                      aria-label="Page précédente"
+                    >
+                      <ChevronLeft className="h-4 w-4"/>
+                    </button>
+                    {Array.from({ length: totalPages }).map((_, i) => {
+                      const n = i + 1;
+                      const active = n === currentPage;
+                      return (
+                        <button
+                          key={n}
+                          onClick={() => setPage(n)}
+                          className={`h-10 min-w-10 px-3 inline-flex items-center justify-center rounded-sm text-sm transition ${active ? "bg-gradient-gold text-secondary font-semibold" : "border border-border hover:border-primary"}`}
+                        >
+                          {n}
+                        </button>
+                      );
+                    })}
+                    <button
+                      onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+                      disabled={currentPage === totalPages}
+                      className="h-10 w-10 inline-flex items-center justify-center rounded-sm border border-border disabled:opacity-30 hover:border-primary transition"
+                      aria-label="Page suivante"
+                    >
+                      <ChevronRight className="h-4 w-4"/>
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </section>
