@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, ShoppingBag, Heart } from "lucide-react";
 import logo from "@/assets/logo.png";
+import { useCart } from "@/context/CartContext";
 
 const navLinks = [
   { to: "/", label: "Accueil" },
@@ -14,6 +15,7 @@ const navLinks = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { count, setOpen: setCartOpen } = useCart();
   return (
     <>
       {/* Announcement marquee */}
@@ -53,8 +55,13 @@ export function SiteHeader() {
             <button aria-label="Favoris" className="hidden sm:inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted transition">
               <Heart className="h-5 w-5" />
             </button>
-            <button aria-label="Panier" className="inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted transition">
+            <button aria-label="Panier" onClick={() => setCartOpen(true)} className="relative inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted transition">
               <ShoppingBag className="h-5 w-5" />
+              {count > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 h-5 min-w-5 px-1 inline-flex items-center justify-center rounded-full bg-gradient-gold text-secondary text-[10px] font-bold">
+                  {count}
+                </span>
+              )}
             </button>
             <button aria-label="Menu" onClick={() => setOpen(true)} className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted">
               <Menu className="h-5 w-5" />
