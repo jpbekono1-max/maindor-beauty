@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Heart, MessageCircle, ShoppingBag, Minus, Plus, Star } from "lucide-react";
 import { catalog, formatFCFA, products } from "@/data/products";
 import { ProductCard } from "@/components/site/ProductCard";
+import { useCart } from "@/context/CartContext";
 
 export const Route = createFileRoute("/boutique/$slug")({
   component: ProductPage,
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/boutique/$slug")({
 
 function ProductPage() {
   const { product } = Route.useLoaderData();
+  const { addItem } = useCart();
   const [tab, setTab] = useState<"detail"|"care"|"ship">("detail");
   const [qty, setQty] = useState(1);
   const [color, setColor] = useState(product.colors?.[0]);
@@ -116,7 +118,21 @@ function ProductPage() {
               </div>
 
               <div className="mt-8 grid sm:grid-cols-2 gap-3">
-                <button className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-gradient-gold text-secondary font-semibold rounded-sm hover:shadow-luxe transition"><ShoppingBag className="h-4 w-4"/> Commander</button>
+                <button
+                  onClick={() => addItem({
+                    slug: product.slug,
+                    name: product.name,
+                    image: product.image,
+                    price: product.price,
+                    qty,
+                    color,
+                    length,
+                    density,
+                  })}
+                  className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-gradient-gold text-secondary font-semibold rounded-sm hover:shadow-luxe transition"
+                >
+                  <ShoppingBag className="h-4 w-4"/> Ajouter au panier
+                </button>
                 <button className="inline-flex items-center justify-center gap-2 px-6 py-4 border border-primary text-primary hover:bg-primary hover:text-secondary rounded-sm transition"><Heart className="h-4 w-4"/> Favoris</button>
               </div>
               <a href={`https://wa.me/237693881451?text=${wa}`} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex w-full items-center justify-center gap-2 px-6 py-4 bg-[#25D366] text-white rounded-sm hover:opacity-90 transition">

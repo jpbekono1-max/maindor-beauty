@@ -12,6 +12,8 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { WhatsAppButton } from "@/components/site/WhatsAppButton";
+import { CartProvider } from "@/context/CartContext";
+import { CartDrawer } from "@/components/site/CartDrawer";
 
 function NotFoundComponent() {
   return (
@@ -115,14 +117,17 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex min-h-screen flex-col">
-        <SiteHeader />
-        <main className="flex-1">
-          <Outlet />
-        </main>
-        <SiteFooter />
-        <WhatsAppButton />
-      </div>
+      <CartProvider>
+        <div className="flex min-h-screen flex-col">
+          <SiteHeader />
+          <main className="flex-1">
+            <Outlet />
+          </main>
+          <SiteFooter />
+          <WhatsAppButton />
+          <CartDrawer />
+        </div>
+      </CartProvider>
     </QueryClientProvider>
   );
 }
