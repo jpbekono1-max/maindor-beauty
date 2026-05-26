@@ -61,7 +61,7 @@ function ProductPage() {
                 <div className="flex gap-0.5">
                   {Array.from({length:5}).map((_,i) => <Star key={i} className={`h-4 w-4 ${i < product.rating ? "fill-primary text-primary" : "text-muted-foreground/30"}`}/>)}
                 </div>
-                <span className="text-xs text-muted-foreground">({product.rating}.0 · 24 avis)</span>
+                <span className="text-xs text-muted-foreground">({product.rating}.0 · {product.reviews} avis)</span>
               </div>
               <div className="mt-6 flex items-baseline gap-3">
                 {product.oldPrice && <span className="text-lg line-through text-muted-foreground">{formatFCFA(product.oldPrice)}</span>}
