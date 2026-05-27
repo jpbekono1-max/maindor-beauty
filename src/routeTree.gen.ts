@@ -19,6 +19,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as BoutiqueIndexRouteImport } from './routes/boutique.index'
 import { Route as CommandePaiementRouteImport } from './routes/commande.paiement'
 import { Route as CommandeCoordonneesRouteImport } from './routes/commande.coordonnees'
+import { Route as CommandeConfirmationRouteImport } from './routes/commande.confirmation'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 
 const ServicesRoute = ServicesRouteImport.update({
@@ -71,6 +72,11 @@ const CommandeCoordonneesRoute = CommandeCoordonneesRouteImport.update({
   path: '/commande/coordonnees',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CommandeConfirmationRoute = CommandeConfirmationRouteImport.update({
+  id: '/commande/confirmation',
+  path: '/commande/confirmation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BoutiqueSlugRoute = BoutiqueSlugRouteImport.update({
   id: '/boutique/$slug',
   path: '/boutique/$slug',
@@ -86,6 +92,7 @@ export interface FileRoutesByFullPath {
   '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
+  '/commande/confirmation': typeof CommandeConfirmationRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
   '/commande/paiement': typeof CommandePaiementRoute
   '/boutique/': typeof BoutiqueIndexRoute
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
+  '/commande/confirmation': typeof CommandeConfirmationRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
   '/commande/paiement': typeof CommandePaiementRoute
   '/boutique': typeof BoutiqueIndexRoute
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
+  '/commande/confirmation': typeof CommandeConfirmationRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
   '/commande/paiement': typeof CommandePaiementRoute
   '/boutique/': typeof BoutiqueIndexRoute
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/panier'
     | '/services'
     | '/boutique/$slug'
+    | '/commande/confirmation'
     | '/commande/coordonnees'
     | '/commande/paiement'
     | '/boutique/'
@@ -141,6 +151,7 @@ export interface FileRouteTypes {
     | '/panier'
     | '/services'
     | '/boutique/$slug'
+    | '/commande/confirmation'
     | '/commande/coordonnees'
     | '/commande/paiement'
     | '/boutique'
@@ -154,6 +165,7 @@ export interface FileRouteTypes {
     | '/panier'
     | '/services'
     | '/boutique/$slug'
+    | '/commande/confirmation'
     | '/commande/coordonnees'
     | '/commande/paiement'
     | '/boutique/'
@@ -168,6 +180,7 @@ export interface RootRouteChildren {
   PanierRoute: typeof PanierRoute
   ServicesRoute: typeof ServicesRoute
   BoutiqueSlugRoute: typeof BoutiqueSlugRoute
+  CommandeConfirmationRoute: typeof CommandeConfirmationRoute
   CommandeCoordonneesRoute: typeof CommandeCoordonneesRoute
   CommandePaiementRoute: typeof CommandePaiementRoute
   BoutiqueIndexRoute: typeof BoutiqueIndexRoute
@@ -245,6 +258,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CommandeCoordonneesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/commande/confirmation': {
+      id: '/commande/confirmation'
+      path: '/commande/confirmation'
+      fullPath: '/commande/confirmation'
+      preLoaderRoute: typeof CommandeConfirmationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/boutique/$slug': {
       id: '/boutique/$slug'
       path: '/boutique/$slug'
@@ -264,6 +284,7 @@ const rootRouteChildren: RootRouteChildren = {
   PanierRoute: PanierRoute,
   ServicesRoute: ServicesRoute,
   BoutiqueSlugRoute: BoutiqueSlugRoute,
+  CommandeConfirmationRoute: CommandeConfirmationRoute,
   CommandeCoordonneesRoute: CommandeCoordonneesRoute,
   CommandePaiementRoute: CommandePaiementRoute,
   BoutiqueIndexRoute: BoutiqueIndexRoute,
