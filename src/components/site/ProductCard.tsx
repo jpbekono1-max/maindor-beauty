@@ -2,8 +2,12 @@ import { Link } from "@tanstack/react-router";
 import { Heart, Star } from "lucide-react";
 import type { Product } from "@/data/products";
 import { formatFCFA } from "@/data/products";
+import { useWishlist } from "@/context/WishlistContext";
+import { toast } from "sonner";
 
 export function ProductCard({ product }: { product: Product }) {
+  const { has, toggle } = useWishlist();
+  const fav = has(product.slug);
   return (
     <div className="group relative bg-card rounded-md overflow-hidden border border-border hover:shadow-luxe transition-all duration-500">
       <Link to="/boutique/$slug" params={{ slug: product.slug }} className="block relative aspect-[4/5] overflow-hidden bg-muted">
@@ -13,8 +17,17 @@ export function ProductCard({ product }: { product: Product }) {
             {product.badge}
           </span>
         )}
-        <button aria-label="Favori" onClick={(e) => e.preventDefault()} className="absolute top-3 right-3 h-9 w-9 rounded-full bg-background/90 backdrop-blur inline-flex items-center justify-center opacity-0 group-hover:opacity-100 transition hover:text-primary">
-          <Heart className="h-4 w-4"/>
+        <button
+          aria-label={fav ? "Retirer des favoris" : "Ajouter aux favoris"}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const now = toggle(product.slug);
+            toast.success(now ? "Produit sauvegardé dans vos favoris" : "Retiré des favoris");
+          }}
+          className={`absolute top-3 right-3 h-9 w-9 rounded-full backdrop-blur inline-flex items-center justify-center transition ${fav ? "bg-primary text-secondary opacity-100" : "bg-background/90 opacity-0 group-hover:opacity-100 hover:text-primary"}`}
+        >
+          <Heart className={`h-4 w-4 ${fav ? "fill-current" : ""}`}/>
         </button>
       </Link>
       <div className="p-4 space-y-2">
