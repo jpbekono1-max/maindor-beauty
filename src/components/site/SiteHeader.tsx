@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Menu, X, ShoppingBag, Heart } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
+import { formatFCFA } from "@/data/products";
 
 const navLinks = [
   { to: "/", label: "Accueil" },
@@ -15,7 +17,9 @@ const navLinks = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const { count, setOpen: setCartOpen } = useCart();
+  const { count, setOpen: setCartOpen, items, subtotal } = useCart();
+  const { count: wishCount } = useWishlist();
+  const [miniOpen, setMiniOpen] = useState(false);
   return (
     <>
       {/* Announcement marquee */}
@@ -52,17 +56,52 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <button aria-label="Favoris" className="hidden sm:inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted transition">
+            <Link to="/favoris" aria-label="Favoris" className="relative hidden sm:inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted transition">
               <Heart className="h-5 w-5" />
-            </button>
-            <button aria-label="Panier" onClick={() => setCartOpen(true)} className="relative inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted transition">
-              <ShoppingBag className="h-5 w-5" />
-              {count > 0 && (
-                <span className="absolute -top-0.5 -right-0.5 h-5 min-w-5 px-1 inline-flex items-center justify-center rounded-full bg-gradient-gold text-secondary text-[10px] font-bold">
-                  {count}
+              {wishCount > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 h-5 min-w-5 px-1 inline-flex items-center justify-center rounded-full bg-secondary text-ivory text-[10px] font-bold" style={{backgroundColor:"var(--noir)", color:"var(--ivory)"}}>
+                  {wishCount}
                 </span>
               )}
-            </button>
+            </Link>
+            <div className="relative" onMouseEnter={() => setMiniOpen(true)} onMouseLeave={() => setMiniOpen(false)}>
+              <button aria-label="Panier" onClick={() => setCartOpen(true)} className="relative inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted transition">
+                <ShoppingBag className="h-5 w-5" />
+                {count > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 h-5 min-w-5 px-1 inline-flex items-center justify-center rounded-full bg-gradient-gold text-secondary text-[10px] font-bold">
+                    {count}
+                  </span>
+                )}
+              </button>
+              {miniOpen && items.length > 0 && (
+                <div className="hidden lg:block absolute right-0 top-full pt-2 z-50">
+                  <div className="w-80 bg-card border border-border rounded-md shadow-luxe p-4">
+                    <div className="max-h-64 overflow-y-auto space-y-3">
+                      {items.slice(0, 4).map(i => (
+                        <div key={i.id} className="flex gap-3">
+                          <img src={i.image} alt={i.name} className="h-12 w-12 object-cover rounded-sm bg-muted shrink-0"/>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-display leading-tight line-clamp-1">{i.name}</p>
+                            <p className="text-[11px] text-muted-foreground">× {i.qty} — {formatFCFA(i.price * i.qty)}</p>
+                          </div>
+                        </div>
+                      ))}
+                      {items.length > 4 && (
+                        <p className="text-[11px] text-muted-foreground">+ {items.length - 4} autre(s) article(s)</p>
+                      )}
+                    </div>
+                    <div className="mt-3 pt-3 border-t border-border flex items-baseline justify-between">
+                      <span className="text-xs uppercase tracking-widest text-muted-foreground">Sous-total</span>
+                      <span className="font-display text-lg" style={{color:"var(--gold-dark)"}}>{formatFCFA(subtotal)}</span>
+                    </div>
+                    <div className="mt-3 grid grid-cols-2 gap-2">
+                      <Link to="/panier" className="text-center text-xs px-3 py-2 border border-primary text-primary rounded-sm hover:bg-primary hover:text-secondary transition">Voir le panier</Link>
+                      <Link to="/commande/coordonnees" className="text-center text-xs px-3 py-2 bg-gradient-gold text-secondary font-semibold rounded-sm">Commander</Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
             <button aria-label="Menu" onClick={() => setOpen(true)} className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted">
               <Menu className="h-5 w-5" />
             </button>

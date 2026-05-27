@@ -1,10 +1,10 @@
-import { Minus, Plus, ShoppingBag, Trash2, X, MessageCircle } from "lucide-react";
+import { Minus, Plus, ShoppingBag, Trash2, X, MessageCircle, ArrowRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatFCFA } from "@/data/products";
 import { Link } from "@tanstack/react-router";
 
 export function CartDrawer() {
-  const { open, setOpen, items, removeItem, updateQty, total, count, clear } = useCart();
+  const { open, setOpen, items, removeItem, updateQty, subtotal, total, count, clear, shippingCost, promo } = useCart();
 
   if (!open) return null;
 
@@ -78,13 +78,23 @@ export function CartDrawer() {
             </div>
 
             <div className="border-t border-border px-6 py-5 space-y-4 bg-muted/30">
-              <div className="flex items-baseline justify-between">
+              <div className="space-y-1.5 text-sm">
+                <div className="flex justify-between"><span className="text-muted-foreground">Sous-total</span><span>{formatFCFA(subtotal)}</span></div>
+                {promo && <div className="flex justify-between text-[#0a7c3a]"><span>Code {promo.code}</span><span>− {formatFCFA(promo.amount)}</span></div>}
+                <div className="flex justify-between"><span className="text-muted-foreground">Livraison</span><span>{shippingCost === 0 ? "Gratuit" : formatFCFA(shippingCost)}</span></div>
+              </div>
+              <div className="flex items-baseline justify-between pt-2 border-t border-border">
                 <span className="text-xs uppercase tracking-widest text-muted-foreground">Total</span>
                 <span className="font-display text-2xl" style={{color:"var(--gold-dark)"}}>{formatFCFA(total)}</span>
               </div>
-              <p className="text-[11px] text-muted-foreground">Livraison calculée à la confirmation. Paiement à la livraison disponible à Yaoundé.</p>
-              <a href={waUrl} target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 bg-[#25D366] text-white rounded-sm hover:opacity-90 transition font-semibold">
-                <MessageCircle className="h-5 w-5"/> Confirmer via WhatsApp
+              <Link to="/commande/coordonnees" onClick={() => setOpen(false)} className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 bg-gradient-gold text-secondary rounded-sm font-semibold hover:shadow-luxe transition">
+                Passer la commande <ArrowRight className="h-4 w-4"/>
+              </Link>
+              <Link to="/panier" onClick={() => setOpen(false)} className="w-full text-center inline-flex items-center justify-center gap-2 px-6 py-3 border border-border rounded-sm hover:bg-muted transition text-sm">
+                Voir le panier
+              </Link>
+              <a href={waUrl} target="_blank" rel="noopener noreferrer" className="w-full inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#25D366] text-white rounded-sm hover:opacity-90 transition text-sm">
+                <MessageCircle className="h-4 w-4"/> Commander via WhatsApp
               </a>
               <button onClick={clear} className="w-full text-xs text-muted-foreground hover:text-destructive underline underline-offset-4">Vider le panier</button>
             </div>

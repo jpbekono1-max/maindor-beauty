@@ -9,22 +9,43 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SuiviCommandeRouteImport } from './routes/suivi-commande'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as PanierRouteImport } from './routes/panier'
 import { Route as GalerieRouteImport } from './routes/galerie'
+import { Route as FavorisRouteImport } from './routes/favoris'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AProposRouteImport } from './routes/a-propos'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BoutiqueIndexRouteImport } from './routes/boutique.index'
+import { Route as CommandePaiementRouteImport } from './routes/commande.paiement'
+import { Route as CommandeCoordonneesRouteImport } from './routes/commande.coordonnees'
+import { Route as CommandeConfirmationRouteImport } from './routes/commande.confirmation'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 
+const SuiviCommandeRoute = SuiviCommandeRouteImport.update({
+  id: '/suivi-commande',
+  path: '/suivi-commande',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PanierRoute = PanierRouteImport.update({
+  id: '/panier',
+  path: '/panier',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GalerieRoute = GalerieRouteImport.update({
   id: '/galerie',
   path: '/galerie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FavorisRoute = FavorisRouteImport.update({
+  id: '/favoris',
+  path: '/favoris',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -47,6 +68,21 @@ const BoutiqueIndexRoute = BoutiqueIndexRouteImport.update({
   path: '/boutique/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CommandePaiementRoute = CommandePaiementRouteImport.update({
+  id: '/commande/paiement',
+  path: '/commande/paiement',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommandeCoordonneesRoute = CommandeCoordonneesRouteImport.update({
+  id: '/commande/coordonnees',
+  path: '/commande/coordonnees',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommandeConfirmationRoute = CommandeConfirmationRouteImport.update({
+  id: '/commande/confirmation',
+  path: '/commande/confirmation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BoutiqueSlugRoute = BoutiqueSlugRouteImport.update({
   id: '/boutique/$slug',
   path: '/boutique/$slug',
@@ -57,18 +93,30 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
   '/contact': typeof ContactRoute
+  '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
+  '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
+  '/suivi-commande': typeof SuiviCommandeRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
+  '/commande/confirmation': typeof CommandeConfirmationRoute
+  '/commande/coordonnees': typeof CommandeCoordonneesRoute
+  '/commande/paiement': typeof CommandePaiementRoute
   '/boutique/': typeof BoutiqueIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
   '/contact': typeof ContactRoute
+  '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
+  '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
+  '/suivi-commande': typeof SuiviCommandeRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
+  '/commande/confirmation': typeof CommandeConfirmationRoute
+  '/commande/coordonnees': typeof CommandeCoordonneesRoute
+  '/commande/paiement': typeof CommandePaiementRoute
   '/boutique': typeof BoutiqueIndexRoute
 }
 export interface FileRoutesById {
@@ -76,9 +124,15 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
   '/contact': typeof ContactRoute
+  '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
+  '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
+  '/suivi-commande': typeof SuiviCommandeRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
+  '/commande/confirmation': typeof CommandeConfirmationRoute
+  '/commande/coordonnees': typeof CommandeCoordonneesRoute
+  '/commande/paiement': typeof CommandePaiementRoute
   '/boutique/': typeof BoutiqueIndexRoute
 }
 export interface FileRouteTypes {
@@ -87,27 +141,45 @@ export interface FileRouteTypes {
     | '/'
     | '/a-propos'
     | '/contact'
+    | '/favoris'
     | '/galerie'
+    | '/panier'
     | '/services'
+    | '/suivi-commande'
     | '/boutique/$slug'
+    | '/commande/confirmation'
+    | '/commande/coordonnees'
+    | '/commande/paiement'
     | '/boutique/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/a-propos'
     | '/contact'
+    | '/favoris'
     | '/galerie'
+    | '/panier'
     | '/services'
+    | '/suivi-commande'
     | '/boutique/$slug'
+    | '/commande/confirmation'
+    | '/commande/coordonnees'
+    | '/commande/paiement'
     | '/boutique'
   id:
     | '__root__'
     | '/'
     | '/a-propos'
     | '/contact'
+    | '/favoris'
     | '/galerie'
+    | '/panier'
     | '/services'
+    | '/suivi-commande'
     | '/boutique/$slug'
+    | '/commande/confirmation'
+    | '/commande/coordonnees'
+    | '/commande/paiement'
     | '/boutique/'
   fileRoutesById: FileRoutesById
 }
@@ -115,14 +187,27 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AProposRoute: typeof AProposRoute
   ContactRoute: typeof ContactRoute
+  FavorisRoute: typeof FavorisRoute
   GalerieRoute: typeof GalerieRoute
+  PanierRoute: typeof PanierRoute
   ServicesRoute: typeof ServicesRoute
+  SuiviCommandeRoute: typeof SuiviCommandeRoute
   BoutiqueSlugRoute: typeof BoutiqueSlugRoute
+  CommandeConfirmationRoute: typeof CommandeConfirmationRoute
+  CommandeCoordonneesRoute: typeof CommandeCoordonneesRoute
+  CommandePaiementRoute: typeof CommandePaiementRoute
   BoutiqueIndexRoute: typeof BoutiqueIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/suivi-commande': {
+      id: '/suivi-commande'
+      path: '/suivi-commande'
+      fullPath: '/suivi-commande'
+      preLoaderRoute: typeof SuiviCommandeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -130,11 +215,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/panier': {
+      id: '/panier'
+      path: '/panier'
+      fullPath: '/panier'
+      preLoaderRoute: typeof PanierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/galerie': {
       id: '/galerie'
       path: '/galerie'
       fullPath: '/galerie'
       preLoaderRoute: typeof GalerieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/favoris': {
+      id: '/favoris'
+      path: '/favoris'
+      fullPath: '/favoris'
+      preLoaderRoute: typeof FavorisRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -165,6 +264,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoutiqueIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/commande/paiement': {
+      id: '/commande/paiement'
+      path: '/commande/paiement'
+      fullPath: '/commande/paiement'
+      preLoaderRoute: typeof CommandePaiementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/commande/coordonnees': {
+      id: '/commande/coordonnees'
+      path: '/commande/coordonnees'
+      fullPath: '/commande/coordonnees'
+      preLoaderRoute: typeof CommandeCoordonneesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/commande/confirmation': {
+      id: '/commande/confirmation'
+      path: '/commande/confirmation'
+      fullPath: '/commande/confirmation'
+      preLoaderRoute: typeof CommandeConfirmationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/boutique/$slug': {
       id: '/boutique/$slug'
       path: '/boutique/$slug'
@@ -179,9 +299,15 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AProposRoute: AProposRoute,
   ContactRoute: ContactRoute,
+  FavorisRoute: FavorisRoute,
   GalerieRoute: GalerieRoute,
+  PanierRoute: PanierRoute,
   ServicesRoute: ServicesRoute,
+  SuiviCommandeRoute: SuiviCommandeRoute,
   BoutiqueSlugRoute: BoutiqueSlugRoute,
+  CommandeConfirmationRoute: CommandeConfirmationRoute,
+  CommandeCoordonneesRoute: CommandeCoordonneesRoute,
+  CommandePaiementRoute: CommandePaiementRoute,
   BoutiqueIndexRoute: BoutiqueIndexRoute,
 }
 export const routeTree = rootRouteImport

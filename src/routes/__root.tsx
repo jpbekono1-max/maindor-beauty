@@ -14,6 +14,9 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { WhatsAppButton } from "@/components/site/WhatsAppButton";
 import { CartProvider } from "@/context/CartContext";
 import { CartDrawer } from "@/components/site/CartDrawer";
+import { WishlistProvider } from "@/context/WishlistContext";
+import { CheckoutProvider } from "@/context/CheckoutContext";
+import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
   return (
@@ -118,15 +121,20 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <CartProvider>
-        <div className="flex min-h-screen flex-col">
-          <SiteHeader />
-          <main className="flex-1">
-            <Outlet />
-          </main>
-          <SiteFooter />
-          <WhatsAppButton />
-          <CartDrawer />
-        </div>
+        <WishlistProvider>
+          <CheckoutProvider>
+            <div className="flex min-h-screen flex-col">
+              <SiteHeader />
+              <main className="flex-1">
+                <Outlet />
+              </main>
+              <SiteFooter />
+              <WhatsAppButton />
+              <CartDrawer />
+              <Toaster position="top-right" richColors />
+            </div>
+          </CheckoutProvider>
+        </WishlistProvider>
       </CartProvider>
     </QueryClientProvider>
   );
