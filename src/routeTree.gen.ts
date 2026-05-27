@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SuiviCommandeRouteImport } from './routes/suivi-commande'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PanierRouteImport } from './routes/panier'
 import { Route as GalerieRouteImport } from './routes/galerie'
@@ -22,6 +23,11 @@ import { Route as CommandeCoordonneesRouteImport } from './routes/commande.coord
 import { Route as CommandeConfirmationRouteImport } from './routes/commande.confirmation'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 
+const SuiviCommandeRoute = SuiviCommandeRouteImport.update({
+  id: '/suivi-commande',
+  path: '/suivi-commande',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ServicesRoute = ServicesRouteImport.update({
   id: '/services',
   path: '/services',
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/galerie': typeof GalerieRoute
   '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
+  '/suivi-commande': typeof SuiviCommandeRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/commande/confirmation': typeof CommandeConfirmationRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
@@ -105,6 +112,7 @@ export interface FileRoutesByTo {
   '/galerie': typeof GalerieRoute
   '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
+  '/suivi-commande': typeof SuiviCommandeRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/commande/confirmation': typeof CommandeConfirmationRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
@@ -120,6 +128,7 @@ export interface FileRoutesById {
   '/galerie': typeof GalerieRoute
   '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
+  '/suivi-commande': typeof SuiviCommandeRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/commande/confirmation': typeof CommandeConfirmationRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/galerie'
     | '/panier'
     | '/services'
+    | '/suivi-commande'
     | '/boutique/$slug'
     | '/commande/confirmation'
     | '/commande/coordonnees'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/galerie'
     | '/panier'
     | '/services'
+    | '/suivi-commande'
     | '/boutique/$slug'
     | '/commande/confirmation'
     | '/commande/coordonnees'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/galerie'
     | '/panier'
     | '/services'
+    | '/suivi-commande'
     | '/boutique/$slug'
     | '/commande/confirmation'
     | '/commande/coordonnees'
@@ -179,6 +191,7 @@ export interface RootRouteChildren {
   GalerieRoute: typeof GalerieRoute
   PanierRoute: typeof PanierRoute
   ServicesRoute: typeof ServicesRoute
+  SuiviCommandeRoute: typeof SuiviCommandeRoute
   BoutiqueSlugRoute: typeof BoutiqueSlugRoute
   CommandeConfirmationRoute: typeof CommandeConfirmationRoute
   CommandeCoordonneesRoute: typeof CommandeCoordonneesRoute
@@ -188,6 +201,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/suivi-commande': {
+      id: '/suivi-commande'
+      path: '/suivi-commande'
+      fullPath: '/suivi-commande'
+      preLoaderRoute: typeof SuiviCommandeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/services': {
       id: '/services'
       path: '/services'
@@ -283,6 +303,7 @@ const rootRouteChildren: RootRouteChildren = {
   GalerieRoute: GalerieRoute,
   PanierRoute: PanierRoute,
   ServicesRoute: ServicesRoute,
+  SuiviCommandeRoute: SuiviCommandeRoute,
   BoutiqueSlugRoute: BoutiqueSlugRoute,
   CommandeConfirmationRoute: CommandeConfirmationRoute,
   CommandeCoordonneesRoute: CommandeCoordonneesRoute,
