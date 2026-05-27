@@ -4,6 +4,8 @@ import { Heart, MessageCircle, ShoppingBag, Minus, Plus, Star } from "lucide-rea
 import { catalog, formatFCFA, products } from "@/data/products";
 import { ProductCard } from "@/components/site/ProductCard";
 import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/boutique/$slug")({
   component: ProductPage,
@@ -27,6 +29,8 @@ export const Route = createFileRoute("/boutique/$slug")({
 function ProductPage() {
   const { product } = Route.useLoaderData();
   const { addItem } = useCart();
+  const { has, toggle } = useWishlist();
+  const fav = has(product.slug);
   const [tab, setTab] = useState<"detail"|"care"|"ship">("detail");
   const [qty, setQty] = useState(1);
   const [color, setColor] = useState(product.colors?.[0]);
@@ -119,21 +123,20 @@ function ProductPage() {
 
               <div className="mt-8 grid sm:grid-cols-2 gap-3">
                 <button
-                  onClick={() => addItem({
-                    slug: product.slug,
-                    name: product.name,
-                    image: product.image,
-                    price: product.price,
-                    qty,
-                    color,
-                    length,
-                    density,
-                  })}
+                  onClick={() => {
+                    addItem({ slug: product.slug, name: product.name, image: product.image, price: product.price, qty, color, length, density });
+                    toast.success("Produit ajouté au panier !");
+                  }}
                   className="inline-flex items-center justify-center gap-2 px-6 py-4 bg-gradient-gold text-secondary font-semibold rounded-sm hover:shadow-luxe transition"
                 >
                   <ShoppingBag className="h-4 w-4"/> Ajouter au panier
                 </button>
-                <button className="inline-flex items-center justify-center gap-2 px-6 py-4 border border-primary text-primary hover:bg-primary hover:text-secondary rounded-sm transition"><Heart className="h-4 w-4"/> Favoris</button>
+                <button
+                  onClick={() => { const n = toggle(product.slug); toast.success(n ? "Sauvegardé dans vos favoris" : "Retiré des favoris"); }}
+                  className={`inline-flex items-center justify-center gap-2 px-6 py-4 border rounded-sm transition ${fav ? "bg-primary text-secondary border-transparent" : "border-primary text-primary hover:bg-primary hover:text-secondary"}`}
+                >
+                  <Heart className={`h-4 w-4 ${fav ? "fill-current" : ""}`}/> {fav ? "Dans vos favoris" : "Favoris"}
+                </button>
               </div>
               <a href={`https://wa.me/237693881451?text=${wa}`} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex w-full items-center justify-center gap-2 px-6 py-4 bg-[#25D366] text-white rounded-sm hover:opacity-90 transition">
                 <MessageCircle className="h-5 w-5"/> Commander via WhatsApp
