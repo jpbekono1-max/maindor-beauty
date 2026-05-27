@@ -17,6 +17,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AProposRouteImport } from './routes/a-propos'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BoutiqueIndexRouteImport } from './routes/boutique.index'
+import { Route as CommandePaiementRouteImport } from './routes/commande.paiement'
 import { Route as CommandeCoordonneesRouteImport } from './routes/commande.coordonnees'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
 
@@ -60,6 +61,11 @@ const BoutiqueIndexRoute = BoutiqueIndexRouteImport.update({
   path: '/boutique/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CommandePaiementRoute = CommandePaiementRouteImport.update({
+  id: '/commande/paiement',
+  path: '/commande/paiement',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CommandeCoordonneesRoute = CommandeCoordonneesRouteImport.update({
   id: '/commande/coordonnees',
   path: '/commande/coordonnees',
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/services': typeof ServicesRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
+  '/commande/paiement': typeof CommandePaiementRoute
   '/boutique/': typeof BoutiqueIndexRoute
 }
 export interface FileRoutesByTo {
@@ -93,6 +100,7 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
+  '/commande/paiement': typeof CommandePaiementRoute
   '/boutique': typeof BoutiqueIndexRoute
 }
 export interface FileRoutesById {
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/services': typeof ServicesRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
+  '/commande/paiement': typeof CommandePaiementRoute
   '/boutique/': typeof BoutiqueIndexRoute
 }
 export interface FileRouteTypes {
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/boutique/$slug'
     | '/commande/coordonnees'
+    | '/commande/paiement'
     | '/boutique/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/boutique/$slug'
     | '/commande/coordonnees'
+    | '/commande/paiement'
     | '/boutique'
   id:
     | '__root__'
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/services'
     | '/boutique/$slug'
     | '/commande/coordonnees'
+    | '/commande/paiement'
     | '/boutique/'
   fileRoutesById: FileRoutesById
 }
@@ -157,6 +169,7 @@ export interface RootRouteChildren {
   ServicesRoute: typeof ServicesRoute
   BoutiqueSlugRoute: typeof BoutiqueSlugRoute
   CommandeCoordonneesRoute: typeof CommandeCoordonneesRoute
+  CommandePaiementRoute: typeof CommandePaiementRoute
   BoutiqueIndexRoute: typeof BoutiqueIndexRoute
 }
 
@@ -218,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoutiqueIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/commande/paiement': {
+      id: '/commande/paiement'
+      path: '/commande/paiement'
+      fullPath: '/commande/paiement'
+      preLoaderRoute: typeof CommandePaiementRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/commande/coordonnees': {
       id: '/commande/coordonnees'
       path: '/commande/coordonnees'
@@ -245,6 +265,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesRoute: ServicesRoute,
   BoutiqueSlugRoute: BoutiqueSlugRoute,
   CommandeCoordonneesRoute: CommandeCoordonneesRoute,
+  CommandePaiementRoute: CommandePaiementRoute,
   BoutiqueIndexRoute: BoutiqueIndexRoute,
 }
 export const routeTree = rootRouteImport
