@@ -14,6 +14,116 @@ export type Database = {
   }
   public: {
     Tables: {
+      order_items: {
+        Row: {
+          created_at: string
+          id: string
+          line_total: number
+          options: Json
+          order_id: string
+          product_image: string | null
+          product_name: string
+          product_slug: string | null
+          quantity: number
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          line_total?: number
+          options?: Json
+          order_id: string
+          product_image?: string | null
+          product_name: string
+          product_slug?: string | null
+          quantity?: number
+          unit_price?: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          line_total?: number
+          options?: Json
+          order_id?: string
+          product_image?: string | null
+          product_name?: string
+          product_slug?: string | null
+          quantity?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          address: string | null
+          city: string | null
+          created_at: string
+          customer_name: string | null
+          customer_whatsapp: string | null
+          discount: number
+          id: string
+          note: string | null
+          order_number: string
+          payment_method: string | null
+          shipping_cost: number
+          shipping_method: string | null
+          status: string
+          subtotal: number
+          timeline: Json
+          total: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          address?: string | null
+          city?: string | null
+          created_at?: string
+          customer_name?: string | null
+          customer_whatsapp?: string | null
+          discount?: number
+          id?: string
+          note?: string | null
+          order_number: string
+          payment_method?: string | null
+          shipping_cost?: number
+          shipping_method?: string | null
+          status?: string
+          subtotal?: number
+          timeline?: Json
+          total?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          address?: string | null
+          city?: string | null
+          created_at?: string
+          customer_name?: string | null
+          customer_whatsapp?: string | null
+          discount?: number
+          id?: string
+          note?: string | null
+          order_number?: string
+          payment_method?: string | null
+          shipping_cost?: number
+          shipping_method?: string | null
+          status?: string
+          subtotal?: number
+          timeline?: Json
+          total?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           address: string | null
