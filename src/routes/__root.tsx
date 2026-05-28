@@ -16,6 +16,7 @@ import { CartProvider } from "@/context/CartContext";
 import { CartDrawer } from "@/components/site/CartDrawer";
 import { WishlistProvider } from "@/context/WishlistContext";
 import { CheckoutProvider } from "@/context/CheckoutContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -120,7 +121,8 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <CartProvider>
+      <AuthProvider>
+        <CartProvider>
         <WishlistProvider>
           <CheckoutProvider>
             <div className="flex min-h-screen flex-col">
@@ -135,7 +137,8 @@ function RootComponent() {
             </div>
           </CheckoutProvider>
         </WishlistProvider>
-      </CartProvider>
+        </CartProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }
