@@ -31,7 +31,7 @@ function PaiementPage() {
   const navigate = useNavigate();
   const { state, setPayment, setPaymentNumber, setOrderNumber } = useCheckout();
   const { items, subtotal, total, shipping, setShipping, shippingCost, promo, clear } = useCart();
-  const { user, loading: authLoading } = useAuth();
+  const { user } = useAuth();
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
