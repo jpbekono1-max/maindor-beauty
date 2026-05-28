@@ -14,6 +14,7 @@ import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PanierRouteImport } from './routes/panier'
 import { Route as MotDePasseOublieRouteImport } from './routes/mot-de-passe-oublie'
+import { Route as MonCompteRouteImport } from './routes/mon-compte'
 import { Route as InscriptionRouteImport } from './routes/inscription'
 import { Route as GalerieRouteImport } from './routes/galerie'
 import { Route as FavorisRouteImport } from './routes/favoris'
@@ -50,6 +51,11 @@ const PanierRoute = PanierRouteImport.update({
 const MotDePasseOublieRoute = MotDePasseOublieRouteImport.update({
   id: '/mot-de-passe-oublie',
   path: '/mot-de-passe-oublie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MonCompteRoute = MonCompteRouteImport.update({
+  id: '/mon-compte',
+  path: '/mon-compte',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InscriptionRoute = InscriptionRouteImport.update({
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
   '/inscription': typeof InscriptionRoute
+  '/mon-compte': typeof MonCompteRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/panier': typeof PanierRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -140,6 +147,7 @@ export interface FileRoutesByTo {
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
   '/inscription': typeof InscriptionRoute
+  '/mon-compte': typeof MonCompteRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/panier': typeof PanierRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
   '/inscription': typeof InscriptionRoute
+  '/mon-compte': typeof MonCompteRoute
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/panier': typeof PanierRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -181,6 +190,7 @@ export interface FileRouteTypes {
     | '/favoris'
     | '/galerie'
     | '/inscription'
+    | '/mon-compte'
     | '/mot-de-passe-oublie'
     | '/panier'
     | '/reset-password'
@@ -200,6 +210,7 @@ export interface FileRouteTypes {
     | '/favoris'
     | '/galerie'
     | '/inscription'
+    | '/mon-compte'
     | '/mot-de-passe-oublie'
     | '/panier'
     | '/reset-password'
@@ -219,6 +230,7 @@ export interface FileRouteTypes {
     | '/favoris'
     | '/galerie'
     | '/inscription'
+    | '/mon-compte'
     | '/mot-de-passe-oublie'
     | '/panier'
     | '/reset-password'
@@ -239,6 +251,7 @@ export interface RootRouteChildren {
   FavorisRoute: typeof FavorisRoute
   GalerieRoute: typeof GalerieRoute
   InscriptionRoute: typeof InscriptionRoute
+  MonCompteRoute: typeof MonCompteRoute
   MotDePasseOublieRoute: typeof MotDePasseOublieRoute
   PanierRoute: typeof PanierRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -286,6 +299,13 @@ declare module '@tanstack/react-router' {
       path: '/mot-de-passe-oublie'
       fullPath: '/mot-de-passe-oublie'
       preLoaderRoute: typeof MotDePasseOublieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mon-compte': {
+      id: '/mon-compte'
+      path: '/mon-compte'
+      fullPath: '/mon-compte'
+      preLoaderRoute: typeof MonCompteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/inscription': {
@@ -383,6 +403,7 @@ const rootRouteChildren: RootRouteChildren = {
   FavorisRoute: FavorisRoute,
   GalerieRoute: GalerieRoute,
   InscriptionRoute: InscriptionRoute,
+  MonCompteRoute: MonCompteRoute,
   MotDePasseOublieRoute: MotDePasseOublieRoute,
   PanierRoute: PanierRoute,
   ResetPasswordRoute: ResetPasswordRoute,
