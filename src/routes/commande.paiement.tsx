@@ -42,7 +42,7 @@ function PaiementPage() {
   const onConfirm = async () => {
     if (!user) {
       toast.error("Connectez-vous pour confirmer votre commande");
-      navigate({ to: "/connexion", search: { redirect: "/commande/paiement" } as never });
+      navigate({ to: "/connexion" });
       return;
     }
     if (state.payment === "cod" && shipping !== "yaounde") {
