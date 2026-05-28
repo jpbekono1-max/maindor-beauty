@@ -56,7 +56,7 @@ function ConfirmationPage() {
         </div>
 
         <div className="mt-10 flex flex-col sm:flex-row gap-3 justify-center">
-          <Link to="/suivi-commande" onClick={() => reset()} className="px-6 py-4 bg-gradient-gold text-secondary font-semibold rounded-sm text-center hover:shadow-luxe transition">
+          <Link to="/mon-compte/commande/$orderNumber" params={{ orderNumber: state.orderNumber }} onClick={() => reset()} className="px-6 py-4 bg-gradient-gold text-secondary font-semibold rounded-sm text-center hover:shadow-luxe transition">
             Suivre ma commande
           </Link>
           <Link to="/boutique" onClick={() => reset()} className="px-6 py-4 border border-primary text-primary rounded-sm text-center hover:bg-primary hover:text-secondary transition">

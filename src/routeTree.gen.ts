@@ -23,10 +23,12 @@ import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as AProposRouteImport } from './routes/a-propos'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BoutiqueIndexRouteImport } from './routes/boutique.index'
+import { Route as MonCompteCommandesRouteImport } from './routes/mon-compte.commandes'
 import { Route as CommandePaiementRouteImport } from './routes/commande.paiement'
 import { Route as CommandeCoordonneesRouteImport } from './routes/commande.coordonnees'
 import { Route as CommandeConfirmationRouteImport } from './routes/commande.confirmation'
 import { Route as BoutiqueSlugRouteImport } from './routes/boutique.$slug'
+import { Route as MonCompteCommandeOrderNumberRouteImport } from './routes/mon-compte.commande.$orderNumber'
 
 const SuiviCommandeRoute = SuiviCommandeRouteImport.update({
   id: '/suivi-commande',
@@ -98,6 +100,11 @@ const BoutiqueIndexRoute = BoutiqueIndexRouteImport.update({
   path: '/boutique/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MonCompteCommandesRoute = MonCompteCommandesRouteImport.update({
+  id: '/commandes',
+  path: '/commandes',
+  getParentRoute: () => MonCompteRoute,
+} as any)
 const CommandePaiementRoute = CommandePaiementRouteImport.update({
   id: '/commande/paiement',
   path: '/commande/paiement',
@@ -118,6 +125,12 @@ const BoutiqueSlugRoute = BoutiqueSlugRouteImport.update({
   path: '/boutique/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MonCompteCommandeOrderNumberRoute =
+  MonCompteCommandeOrderNumberRouteImport.update({
+    id: '/commande/$orderNumber',
+    path: '/commande/$orderNumber',
+    getParentRoute: () => MonCompteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -127,7 +140,7 @@ export interface FileRoutesByFullPath {
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
   '/inscription': typeof InscriptionRoute
-  '/mon-compte': typeof MonCompteRoute
+  '/mon-compte': typeof MonCompteRouteWithChildren
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/panier': typeof PanierRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -137,7 +150,9 @@ export interface FileRoutesByFullPath {
   '/commande/confirmation': typeof CommandeConfirmationRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
   '/commande/paiement': typeof CommandePaiementRoute
+  '/mon-compte/commandes': typeof MonCompteCommandesRoute
   '/boutique/': typeof BoutiqueIndexRoute
+  '/mon-compte/commande/$orderNumber': typeof MonCompteCommandeOrderNumberRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -147,7 +162,7 @@ export interface FileRoutesByTo {
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
   '/inscription': typeof InscriptionRoute
-  '/mon-compte': typeof MonCompteRoute
+  '/mon-compte': typeof MonCompteRouteWithChildren
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/panier': typeof PanierRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -157,7 +172,9 @@ export interface FileRoutesByTo {
   '/commande/confirmation': typeof CommandeConfirmationRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
   '/commande/paiement': typeof CommandePaiementRoute
+  '/mon-compte/commandes': typeof MonCompteCommandesRoute
   '/boutique': typeof BoutiqueIndexRoute
+  '/mon-compte/commande/$orderNumber': typeof MonCompteCommandeOrderNumberRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -168,7 +185,7 @@ export interface FileRoutesById {
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
   '/inscription': typeof InscriptionRoute
-  '/mon-compte': typeof MonCompteRoute
+  '/mon-compte': typeof MonCompteRouteWithChildren
   '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/panier': typeof PanierRoute
   '/reset-password': typeof ResetPasswordRoute
@@ -178,7 +195,9 @@ export interface FileRoutesById {
   '/commande/confirmation': typeof CommandeConfirmationRoute
   '/commande/coordonnees': typeof CommandeCoordonneesRoute
   '/commande/paiement': typeof CommandePaiementRoute
+  '/mon-compte/commandes': typeof MonCompteCommandesRoute
   '/boutique/': typeof BoutiqueIndexRoute
+  '/mon-compte/commande/$orderNumber': typeof MonCompteCommandeOrderNumberRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -200,7 +219,9 @@ export interface FileRouteTypes {
     | '/commande/confirmation'
     | '/commande/coordonnees'
     | '/commande/paiement'
+    | '/mon-compte/commandes'
     | '/boutique/'
+    | '/mon-compte/commande/$orderNumber'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -220,7 +241,9 @@ export interface FileRouteTypes {
     | '/commande/confirmation'
     | '/commande/coordonnees'
     | '/commande/paiement'
+    | '/mon-compte/commandes'
     | '/boutique'
+    | '/mon-compte/commande/$orderNumber'
   id:
     | '__root__'
     | '/'
@@ -240,7 +263,9 @@ export interface FileRouteTypes {
     | '/commande/confirmation'
     | '/commande/coordonnees'
     | '/commande/paiement'
+    | '/mon-compte/commandes'
     | '/boutique/'
+    | '/mon-compte/commande/$orderNumber'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -251,7 +276,7 @@ export interface RootRouteChildren {
   FavorisRoute: typeof FavorisRoute
   GalerieRoute: typeof GalerieRoute
   InscriptionRoute: typeof InscriptionRoute
-  MonCompteRoute: typeof MonCompteRoute
+  MonCompteRoute: typeof MonCompteRouteWithChildren
   MotDePasseOublieRoute: typeof MotDePasseOublieRoute
   PanierRoute: typeof PanierRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
@@ -364,6 +389,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoutiqueIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mon-compte/commandes': {
+      id: '/mon-compte/commandes'
+      path: '/commandes'
+      fullPath: '/mon-compte/commandes'
+      preLoaderRoute: typeof MonCompteCommandesRouteImport
+      parentRoute: typeof MonCompteRoute
+    }
     '/commande/paiement': {
       id: '/commande/paiement'
       path: '/commande/paiement'
@@ -392,8 +424,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BoutiqueSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mon-compte/commande/$orderNumber': {
+      id: '/mon-compte/commande/$orderNumber'
+      path: '/commande/$orderNumber'
+      fullPath: '/mon-compte/commande/$orderNumber'
+      preLoaderRoute: typeof MonCompteCommandeOrderNumberRouteImport
+      parentRoute: typeof MonCompteRoute
+    }
   }
 }
+
+interface MonCompteRouteChildren {
+  MonCompteCommandesRoute: typeof MonCompteCommandesRoute
+  MonCompteCommandeOrderNumberRoute: typeof MonCompteCommandeOrderNumberRoute
+}
+
+const MonCompteRouteChildren: MonCompteRouteChildren = {
+  MonCompteCommandesRoute: MonCompteCommandesRoute,
+  MonCompteCommandeOrderNumberRoute: MonCompteCommandeOrderNumberRoute,
+}
+
+const MonCompteRouteWithChildren = MonCompteRoute._addFileChildren(
+  MonCompteRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -403,7 +456,7 @@ const rootRouteChildren: RootRouteChildren = {
   FavorisRoute: FavorisRoute,
   GalerieRoute: GalerieRoute,
   InscriptionRoute: InscriptionRoute,
-  MonCompteRoute: MonCompteRoute,
+  MonCompteRoute: MonCompteRouteWithChildren,
   MotDePasseOublieRoute: MotDePasseOublieRoute,
   PanierRoute: PanierRoute,
   ResetPasswordRoute: ResetPasswordRoute,

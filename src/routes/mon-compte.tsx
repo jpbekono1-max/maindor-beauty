@@ -1,9 +1,9 @@
-import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { LogOut, User as UserIcon, ShoppingBag, Heart, Calendar, GraduationCap } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { AccountSidebar } from "@/components/site/AccountSidebar";
 
 export const Route = createFileRoute("/mon-compte")({
   head: () => ({ meta: [{ title: "Mon compte — Main d'or Beauty" }] }),
@@ -19,7 +19,7 @@ type Profile = {
 };
 
 function AccountPage() {
-  const { user, loading: authLoading, signOut } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [profile, setProfile] = useState<Profile>({ full_name: "", whatsapp: "", email: "", city: "", address: "" });
   const [saving, setSaving] = useState(false);
@@ -54,12 +54,6 @@ function AccountPage() {
     toast.success("Profil enregistré !");
   };
 
-  const handleLogout = async () => {
-    await signOut();
-    toast.success("Déconnecté");
-    navigate({ to: "/" });
-  };
-
   if (authLoading || !user) {
     return <div className="container mx-auto px-4 py-16 text-center text-muted-foreground">Chargement…</div>;
   }
@@ -72,27 +66,7 @@ function AccountPage() {
       </div>
 
       <div className="grid lg:grid-cols-[240px_1fr] gap-8">
-        <aside className="space-y-1">
-          {[
-            { icon: UserIcon, label: "Profil", active: true },
-            { icon: ShoppingBag, label: "Mes commandes", to: "/suivi-commande" as const },
-            { icon: Heart, label: "Mes favoris", to: "/favoris" as const },
-            { icon: Calendar, label: "Mes RDV", soon: true },
-            { icon: GraduationCap, label: "Mes formations", soon: true },
-          ].map((it, i) => {
-            const cls = `flex items-center gap-3 px-3 py-2.5 rounded-sm text-sm transition ${it.active ? "bg-secondary text-secondary-foreground" : "hover:bg-muted"}`;
-            if (it.to) return <Link key={i} to={it.to} className={cls}><it.icon className="h-4 w-4"/>{it.label}</Link>;
-            return (
-              <div key={i} className={`${cls} ${it.soon ? "opacity-60 cursor-default" : ""}`}>
-                <it.icon className="h-4 w-4"/>{it.label}
-                {it.soon && <span className="ml-auto text-[10px] uppercase">Bientôt</span>}
-              </div>
-            );
-          })}
-          <button onClick={handleLogout} className="w-full flex items-center gap-3 px-3 py-2.5 rounded-sm text-sm hover:bg-muted text-destructive">
-            <LogOut className="h-4 w-4"/>Déconnexion
-          </button>
-        </aside>
+        <AccountSidebar />
 
         <div className="bg-card border border-border rounded-md p-6 shadow-soft">
           <h2 className="font-display text-xl mb-6">Mes informations</h2>

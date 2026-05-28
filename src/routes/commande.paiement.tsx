@@ -2,10 +2,12 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowLeft, MessageCircle, Loader2 } from "lucide-react";
 import { CheckoutSteps } from "@/components/site/CheckoutSteps";
-import { useCheckout, generateOrderNumber, type PaymentMethod } from "@/context/CheckoutContext";
+import { useCheckout, type PaymentMethod } from "@/context/CheckoutContext";
 import { useCart, SHIPPING_LABELS, SHIPPING_RATES, type ShippingMethod } from "@/context/CartContext";
 import { formatFCFA } from "@/data/products";
 import { toast } from "sonner";
+import { useAuth } from "@/context/AuthContext";
+import { createOrder } from "@/lib/orders";
 
 export const Route = createFileRoute("/commande/paiement")({
   component: PaiementPage,
@@ -29,6 +31,7 @@ function PaiementPage() {
   const navigate = useNavigate();
   const { state, setPayment, setPaymentNumber, setOrderNumber } = useCheckout();
   const { items, subtotal, total, shipping, setShipping, shippingCost, promo, clear } = useCart();
+  const { user } = useAuth();
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -37,6 +40,11 @@ function PaiementPage() {
   }, [items.length, state.customer.fullName, navigate]);
 
   const onConfirm = async () => {
+    if (!user) {
+      toast.error("Connectez-vous pour confirmer votre commande");
+      navigate({ to: "/connexion" });
+      return;
+    }
     if (state.payment === "cod" && shipping !== "yaounde") {
       return toast.error("Paiement à la livraison disponible uniquement à Yaoundé");
     }
@@ -45,7 +53,17 @@ function PaiementPage() {
     }
     setSubmitting(true);
     try {
-      const orderNumber = generateOrderNumber();
+      const { orderNumber } = await createOrder({
+        userId: user.id,
+        items,
+        customer: state.customer,
+        payment: state.payment,
+        shipping,
+        shippingCost,
+        subtotal,
+        discount: promo?.amount ?? 0,
+        total,
+      });
       setOrderNumber(orderNumber);
       if (state.payment === "whatsapp") {
         const lines = [
@@ -67,11 +85,11 @@ function PaiementPage() {
         ].filter(Boolean).join("\n");
         window.open(`https://wa.me/237693881451?text=${encodeURIComponent(lines)}`, "_blank");
       }
-      // Simulate brief processing
-      await new Promise(r => setTimeout(r, 600));
       clear();
       toast.success("Commande passée avec succès !");
       navigate({ to: "/commande/confirmation" });
+    } catch (e: any) {
+      toast.error(e?.message ?? "Erreur lors de l'enregistrement de la commande");
     } finally {
       setSubmitting(false);
     }
