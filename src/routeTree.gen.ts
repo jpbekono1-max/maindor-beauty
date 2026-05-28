@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SuiviCommandeRouteImport } from './routes/suivi-commande'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as PanierRouteImport } from './routes/panier'
+import { Route as InscriptionRouteImport } from './routes/inscription'
 import { Route as GalerieRouteImport } from './routes/galerie'
 import { Route as FavorisRouteImport } from './routes/favoris'
 import { Route as ContactRouteImport } from './routes/contact'
@@ -37,6 +38,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const PanierRoute = PanierRouteImport.update({
   id: '/panier',
   path: '/panier',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InscriptionRoute = InscriptionRouteImport.update({
+  id: '/inscription',
+  path: '/inscription',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GalerieRoute = GalerieRouteImport.update({
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
+  '/inscription': typeof InscriptionRoute
   '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
   '/suivi-commande': typeof SuiviCommandeRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
+  '/inscription': typeof InscriptionRoute
   '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
   '/suivi-commande': typeof SuiviCommandeRoute
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
+  '/inscription': typeof InscriptionRoute
   '/panier': typeof PanierRoute
   '/services': typeof ServicesRoute
   '/suivi-commande': typeof SuiviCommandeRoute
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/favoris'
     | '/galerie'
+    | '/inscription'
     | '/panier'
     | '/services'
     | '/suivi-commande'
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/favoris'
     | '/galerie'
+    | '/inscription'
     | '/panier'
     | '/services'
     | '/suivi-commande'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/contact'
     | '/favoris'
     | '/galerie'
+    | '/inscription'
     | '/panier'
     | '/services'
     | '/suivi-commande'
@@ -202,6 +214,7 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   FavorisRoute: typeof FavorisRoute
   GalerieRoute: typeof GalerieRoute
+  InscriptionRoute: typeof InscriptionRoute
   PanierRoute: typeof PanierRoute
   ServicesRoute: typeof ServicesRoute
   SuiviCommandeRoute: typeof SuiviCommandeRoute
@@ -233,6 +246,13 @@ declare module '@tanstack/react-router' {
       path: '/panier'
       fullPath: '/panier'
       preLoaderRoute: typeof PanierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inscription': {
+      id: '/inscription'
+      path: '/inscription'
+      fullPath: '/inscription'
+      preLoaderRoute: typeof InscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/galerie': {
@@ -322,6 +342,7 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   FavorisRoute: FavorisRoute,
   GalerieRoute: GalerieRoute,
+  InscriptionRoute: InscriptionRoute,
   PanierRoute: PanierRoute,
   ServicesRoute: ServicesRoute,
   SuiviCommandeRoute: SuiviCommandeRoute,
