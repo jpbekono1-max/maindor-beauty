@@ -1,9 +1,10 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Menu, X, ShoppingBag, Heart } from "lucide-react";
+import { Menu, X, ShoppingBag, Heart, User } from "lucide-react";
 import logo from "@/assets/logo.png";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { useAuth } from "@/context/AuthContext";
 import { formatFCFA } from "@/data/products";
 
 const navLinks = [
@@ -19,6 +20,7 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const { count, setOpen: setCartOpen, items, subtotal } = useCart();
   const { count: wishCount } = useWishlist();
+  const { user } = useAuth();
   const [miniOpen, setMiniOpen] = useState(false);
   return (
     <>
@@ -56,6 +58,13 @@ export function SiteHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
+            <Link
+              to={user ? "/mon-compte" : "/connexion"}
+              aria-label={user ? "Mon compte" : "Connexion"}
+              className="hidden sm:inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted transition"
+            >
+              <User className="h-5 w-5" />
+            </Link>
             <Link to="/favoris" aria-label="Favoris" className="relative hidden sm:inline-flex h-10 w-10 items-center justify-center rounded-full hover:bg-muted transition">
               <Heart className="h-5 w-5" />
               {wishCount > 0 && (

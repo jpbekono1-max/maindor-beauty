@@ -11,10 +11,15 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SuiviCommandeRouteImport } from './routes/suivi-commande'
 import { Route as ServicesRouteImport } from './routes/services'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PanierRouteImport } from './routes/panier'
+import { Route as MotDePasseOublieRouteImport } from './routes/mot-de-passe-oublie'
+import { Route as MonCompteRouteImport } from './routes/mon-compte'
+import { Route as InscriptionRouteImport } from './routes/inscription'
 import { Route as GalerieRouteImport } from './routes/galerie'
 import { Route as FavorisRouteImport } from './routes/favoris'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ConnexionRouteImport } from './routes/connexion'
 import { Route as AProposRouteImport } from './routes/a-propos'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as BoutiqueIndexRouteImport } from './routes/boutique.index'
@@ -33,9 +38,29 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PanierRoute = PanierRouteImport.update({
   id: '/panier',
   path: '/panier',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MotDePasseOublieRoute = MotDePasseOublieRouteImport.update({
+  id: '/mot-de-passe-oublie',
+  path: '/mot-de-passe-oublie',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MonCompteRoute = MonCompteRouteImport.update({
+  id: '/mon-compte',
+  path: '/mon-compte',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InscriptionRoute = InscriptionRouteImport.update({
+  id: '/inscription',
+  path: '/inscription',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GalerieRoute = GalerieRouteImport.update({
@@ -51,6 +76,11 @@ const FavorisRoute = FavorisRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConnexionRoute = ConnexionRouteImport.update({
+  id: '/connexion',
+  path: '/connexion',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AProposRoute = AProposRouteImport.update({
@@ -92,10 +122,15 @@ const BoutiqueSlugRoute = BoutiqueSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
+  '/connexion': typeof ConnexionRoute
   '/contact': typeof ContactRoute
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
+  '/inscription': typeof InscriptionRoute
+  '/mon-compte': typeof MonCompteRoute
+  '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/panier': typeof PanierRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/suivi-commande': typeof SuiviCommandeRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
@@ -107,10 +142,15 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
+  '/connexion': typeof ConnexionRoute
   '/contact': typeof ContactRoute
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
+  '/inscription': typeof InscriptionRoute
+  '/mon-compte': typeof MonCompteRoute
+  '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/panier': typeof PanierRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/suivi-commande': typeof SuiviCommandeRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
@@ -123,10 +163,15 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
+  '/connexion': typeof ConnexionRoute
   '/contact': typeof ContactRoute
   '/favoris': typeof FavorisRoute
   '/galerie': typeof GalerieRoute
+  '/inscription': typeof InscriptionRoute
+  '/mon-compte': typeof MonCompteRoute
+  '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/panier': typeof PanierRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/services': typeof ServicesRoute
   '/suivi-commande': typeof SuiviCommandeRoute
   '/boutique/$slug': typeof BoutiqueSlugRoute
@@ -140,10 +185,15 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/a-propos'
+    | '/connexion'
     | '/contact'
     | '/favoris'
     | '/galerie'
+    | '/inscription'
+    | '/mon-compte'
+    | '/mot-de-passe-oublie'
     | '/panier'
+    | '/reset-password'
     | '/services'
     | '/suivi-commande'
     | '/boutique/$slug'
@@ -155,10 +205,15 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/a-propos'
+    | '/connexion'
     | '/contact'
     | '/favoris'
     | '/galerie'
+    | '/inscription'
+    | '/mon-compte'
+    | '/mot-de-passe-oublie'
     | '/panier'
+    | '/reset-password'
     | '/services'
     | '/suivi-commande'
     | '/boutique/$slug'
@@ -170,10 +225,15 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/a-propos'
+    | '/connexion'
     | '/contact'
     | '/favoris'
     | '/galerie'
+    | '/inscription'
+    | '/mon-compte'
+    | '/mot-de-passe-oublie'
     | '/panier'
+    | '/reset-password'
     | '/services'
     | '/suivi-commande'
     | '/boutique/$slug'
@@ -186,10 +246,15 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AProposRoute: typeof AProposRoute
+  ConnexionRoute: typeof ConnexionRoute
   ContactRoute: typeof ContactRoute
   FavorisRoute: typeof FavorisRoute
   GalerieRoute: typeof GalerieRoute
+  InscriptionRoute: typeof InscriptionRoute
+  MonCompteRoute: typeof MonCompteRoute
+  MotDePasseOublieRoute: typeof MotDePasseOublieRoute
   PanierRoute: typeof PanierRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ServicesRoute: typeof ServicesRoute
   SuiviCommandeRoute: typeof SuiviCommandeRoute
   BoutiqueSlugRoute: typeof BoutiqueSlugRoute
@@ -215,11 +280,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/panier': {
       id: '/panier'
       path: '/panier'
       fullPath: '/panier'
       preLoaderRoute: typeof PanierRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mot-de-passe-oublie': {
+      id: '/mot-de-passe-oublie'
+      path: '/mot-de-passe-oublie'
+      fullPath: '/mot-de-passe-oublie'
+      preLoaderRoute: typeof MotDePasseOublieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mon-compte': {
+      id: '/mon-compte'
+      path: '/mon-compte'
+      fullPath: '/mon-compte'
+      preLoaderRoute: typeof MonCompteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inscription': {
+      id: '/inscription'
+      path: '/inscription'
+      fullPath: '/inscription'
+      preLoaderRoute: typeof InscriptionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/galerie': {
@@ -241,6 +334,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/connexion': {
+      id: '/connexion'
+      path: '/connexion'
+      fullPath: '/connexion'
+      preLoaderRoute: typeof ConnexionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/a-propos': {
@@ -298,10 +398,15 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AProposRoute: AProposRoute,
+  ConnexionRoute: ConnexionRoute,
   ContactRoute: ContactRoute,
   FavorisRoute: FavorisRoute,
   GalerieRoute: GalerieRoute,
+  InscriptionRoute: InscriptionRoute,
+  MonCompteRoute: MonCompteRoute,
+  MotDePasseOublieRoute: MotDePasseOublieRoute,
   PanierRoute: PanierRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ServicesRoute: ServicesRoute,
   SuiviCommandeRoute: SuiviCommandeRoute,
   BoutiqueSlugRoute: BoutiqueSlugRoute,
@@ -313,13 +418,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
