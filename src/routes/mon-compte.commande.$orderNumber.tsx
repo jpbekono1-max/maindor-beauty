@@ -1,12 +1,14 @@
 import { createFileRoute, Link, useNavigate, useParams } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowLeft, MessageCircle, CheckCircle2 } from "lucide-react";
+import { ArrowLeft, MessageCircle, CheckCircle2, Download } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { AccountSidebar } from "@/components/site/AccountSidebar";
 import { STATUS_STEPS, STATUS_LABELS, STATUS_COLORS, type OrderStatus } from "@/lib/orders";
 import { formatFCFA } from "@/data/products";
 import { SHIPPING_LABELS, type ShippingMethod } from "@/context/CartContext";
+import { generateInvoicePDF } from "@/lib/invoice-pdf";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/mon-compte/commande/$orderNumber")({
   head: () => ({ meta: [{ title: "Suivi de commande — Main d'or Beauty" }] }),
@@ -121,7 +123,23 @@ function OrderDetailPage() {
                 <h1 className="font-display text-2xl">#{order.order_number}</h1>
                 <p className="text-xs text-muted-foreground mt-1">Passée le {new Date(order.created_at).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" })}</p>
               </div>
-              <span className={`text-[11px] uppercase tracking-widest px-3 py-1.5 rounded-full ${STATUS_COLORS[order.status]}`}>{STATUS_LABELS[order.status]}</span>
+              <div className="flex items-center gap-3">
+                <span className={`text-[11px] uppercase tracking-widest px-3 py-1.5 rounded-full ${STATUS_COLORS[order.status]}`}>{STATUS_LABELS[order.status]}</span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    try {
+                      generateInvoicePDF(order, items);
+                      toast.success("Facture téléchargée");
+                    } catch (e) {
+                      toast.error("Erreur lors de la génération du PDF");
+                    }
+                  }}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-gold text-secondary text-sm font-semibold rounded-sm hover:shadow-luxe transition"
+                >
+                  <Download className="h-4 w-4"/> Télécharger la facture
+                </button>
+              </div>
             </div>
           </header>
 
