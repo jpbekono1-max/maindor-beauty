@@ -5,6 +5,7 @@ import { catalog, formatFCFA, products } from "@/data/products";
 import { ProductCard } from "@/components/site/ProductCard";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
+import { ProductReviews } from "@/components/site/ProductReviews";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/boutique/$slug")({
@@ -159,20 +160,7 @@ function ProductPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-muted/40">
-        <div className="container mx-auto px-4">
-          <h2 className="font-display text-2xl md:text-3xl mb-10">Avis clientes</h2>
-          <div className="grid gap-6 md:grid-cols-2">
-            {[{n:"Mireille N.",r:5,t:"Qualité au rendez-vous, je suis bluffée par la finesse de la lace."},{n:"Aïcha B.",r:5,t:"Livraison rapide et produit fidèle aux photos. Top !"}].map(r => (
-              <div key={r.n} className="bg-card border border-border rounded-md p-6">
-                <div className="flex gap-0.5 mb-3">{Array.from({length:r.r}).map((_,i)=><Star key={i} className="h-4 w-4 fill-primary text-primary"/>)}</div>
-                <p className="text-sm">"{r.t}"</p>
-                <p className="mt-3 text-xs uppercase tracking-widest" style={{color:"var(--gold-dark)"}}>{r.n}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <ProductReviews productSlug={product.slug} />
 
       <section className="py-20">
         <div className="container mx-auto px-4">
