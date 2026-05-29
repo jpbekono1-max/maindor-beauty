@@ -125,6 +125,14 @@ function OrderDetailPage() {
               </div>
               <div className="flex items-center gap-3">
                 <span className={`text-[11px] uppercase tracking-widest px-3 py-1.5 rounded-full ${STATUS_COLORS[order.status]}`}>{STATUS_LABELS[order.status]}</span>
+                <a
+                  href={`https://wa.me/237693881451?text=${waMsg}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-[#25D366] text-white text-sm font-semibold rounded-sm hover:opacity-90 transition"
+                >
+                  <MessageCircle className="h-4 w-4"/> Contacter le support
+                </a>
                 <button
                   type="button"
                   onClick={() => {
