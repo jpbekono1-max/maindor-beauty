@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { ShoppingBag, ChevronRight, Search, X, SlidersHorizontal } from "lucide-react";
+import { ShoppingBag, ChevronRight, Search, X, SlidersHorizontal, ArrowUpDown } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { AccountSidebar } from "@/components/site/AccountSidebar";
@@ -39,6 +39,13 @@ const ALL_STATUSES: OrderStatus[] = [
   "cancelled",
 ];
 
+const SORT_OPTIONS = [
+  { value: "date-desc", label: "Date (récent d'abord)" },
+  { value: "date-asc", label: "Date (ancien d'abord)" },
+  { value: "amount-desc", label: "Montant (élevé → bas)" },
+  { value: "amount-asc", label: "Montant (bas → élevé)" },
+];
+
 function OrdersPage() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -51,6 +58,7 @@ function OrdersPage() {
   const [minAmount, setMinAmount] = useState("");
   const [maxAmount, setMaxAmount] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [sortBy, setSortBy] = useState("date-desc");
 
   useEffect(() => {
     if (!authLoading && !user) navigate({ to: "/connexion", replace: true });
@@ -78,7 +86,7 @@ function OrdersPage() {
 
   const filteredOrders = useMemo(() => {
     if (!orders) return [];
-    return orders.filter((o) => {
+    const filtered = orders.filter((o) => {
       const matchesSearch =
         searchQuery.trim() === "" ||
         o.order_number.toLowerCase().includes(searchQuery.toLowerCase());
@@ -91,7 +99,22 @@ function OrdersPage() {
       const matchesMax = maxAmount === "" || o.total <= parseInt(maxAmount) * 100;
       return matchesSearch && matchesStatus && matchesFrom && matchesTo && matchesMin && matchesMax;
     });
-  }, [orders, searchQuery, statusFilter, dateFrom, dateTo, minAmount, maxAmount]);
+
+    return [...filtered].sort((a, b) => {
+      switch (sortBy) {
+        case "date-desc":
+          return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
+        case "date-asc":
+          return new Date(a.created_at).getTime() - new Date(b.created_at).getTime();
+        case "amount-desc":
+          return b.total - a.total;
+        case "amount-asc":
+          return a.total - b.total;
+        default:
+          return 0;
+      }
+    });
+  }, [orders, searchQuery, statusFilter, dateFrom, dateTo, minAmount, maxAmount, sortBy]);
 
   const hasActiveFilters =
     statusFilter !== "all" ||
@@ -108,6 +131,7 @@ function OrdersPage() {
     setDateTo("");
     setMinAmount("");
     setMaxAmount("");
+    setSortBy("date-desc");
   };
 
   if (authLoading || !user) {
@@ -124,7 +148,7 @@ function OrdersPage() {
       <div className="grid lg:grid-cols-[240px_1fr] gap-8">
         <AccountSidebar />
         <div className="space-y-4">
-          {/* Barre de recherche */}
+          {/* Barre de recherche + tri */}
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -144,6 +168,17 @@ function OrdersPage() {
                 </button>
               )}
             </div>
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-full sm:w-[220px] gap-2">
+                <ArrowUpDown className="h-4 w-4 text-muted-foreground shrink-0" />
+                <SelectValue placeholder="Trier par…" />
+              </SelectTrigger>
+              <SelectContent>
+                {SORT_OPTIONS.map((opt) => (
+                  <SelectItem key={opt.value} value={opt.value}>{opt.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
             <Button
               variant="outline"
               className={`gap-2 ${showFilters ? "border-primary text-primary" : ""}`}
