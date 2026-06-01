@@ -2,7 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/site/PageHeader";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { Award, Heart, Sparkles, ShieldCheck } from "lucide-react";
-import founder from "@/assets/founder.jpg";
+import founderAsset from "@/assets/founder-new.png.asset.json";
+const founder = founderAsset.url;
 import training from "@/assets/training.jpg";
 import bridal from "@/assets/bridal.jpg";
 
