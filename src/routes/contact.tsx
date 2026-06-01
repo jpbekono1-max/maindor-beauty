@@ -60,8 +60,22 @@ function ContactPage() {
             <Info icon={Phone} title="Téléphone" lines={["+237 693 881 451"]}/>
             <Info icon={MessageCircle} title="WhatsApp" lines={["+237 693 881 451"]} link="https://wa.me/237693881451"/>
             <Info icon={Clock} title="Horaires" lines={["Lun–Sam : 8h – 19h","Dim : sur RDV"]}/>
-            <div className="aspect-video rounded-md overflow-hidden border border-border bg-muted relative">
-              <iframe title="Carte Yaoundé" src="https://www.google.com/maps?q=Yaound%C3%A9%2C+Cameroun&output=embed" className="absolute inset-0 w-full h-full" loading="lazy"/>
+            <div className="rounded-md overflow-hidden border border-border bg-muted relative">
+              <iframe
+                title="Localisation Main d'or Beauty"
+                src="https://www.google.com/maps?q=3.837661,11.5085659&z=17&output=embed"
+                className="w-full aspect-video"
+                loading="lazy"
+                allowFullScreen
+              />
+              <a
+                href="https://www.google.com/maps/dir/?api=1&destination=3.837661,11.5085659"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center justify-center w-full gap-2 px-4 py-3 bg-gradient-gold text-secondary rounded-sm font-semibold tracking-wide hover:shadow-luxe transition text-sm"
+              >
+                <MapPin className="h-4 w-4"/> Obtenir l'itinéraire
+              </a>
             </div>
           </aside>
         </div>
