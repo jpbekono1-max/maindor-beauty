@@ -1,6 +1,8 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { ShoppingBag, ChevronRight, Search, X, SlidersHorizontal, ArrowUpDown } from "lucide-react";
+import { zodValidator, fallback } from "@tanstack/zod-adapter";
+import { z } from "zod";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { AccountSidebar } from "@/components/site/AccountSidebar";
@@ -16,8 +18,21 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+const sortEnum = z.enum(["date-desc", "date-asc", "amount-desc", "amount-asc"]);
+
+const searchSchema = z.object({
+  sort: fallback(sortEnum, "date-desc").default("date-desc"),
+  q: fallback(z.string(), "").default(""),
+  status: fallback(z.string(), "all").default("all"),
+  from: fallback(z.string(), "").default(""),
+  to: fallback(z.string(), "").default(""),
+  min: fallback(z.string(), "").default(""),
+  max: fallback(z.string(), "").default(""),
+});
+
 export const Route = createFileRoute("/mon-compte/commandes")({
   head: () => ({ meta: [{ title: "Mes commandes — Main d'or Beauty" }] }),
+  validateSearch: zodValidator(searchSchema),
   component: OrdersPage,
 });
 
@@ -49,16 +64,11 @@ const SORT_OPTIONS = [
 function OrdersPage() {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const filterNavigate = useNavigate({ from: "/mon-compte/commandes" });
   const [orders, setOrders] = useState<OrderRow[] | null>(null);
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [dateFrom, setDateFrom] = useState("");
-  const [dateTo, setDateTo] = useState("");
-  const [minAmount, setMinAmount] = useState("");
-  const [maxAmount, setMaxAmount] = useState("");
   const [showFilters, setShowFilters] = useState(false);
-  const [sortBy, setSortBy] = useState("date-desc");
+
+  const { sort, q, status, from, to, min, max } = Route.useSearch();
 
   useEffect(() => {
     if (!authLoading && !user) navigate({ to: "/connexion", replace: true });
@@ -88,20 +98,19 @@ function OrdersPage() {
     if (!orders) return [];
     const filtered = orders.filter((o) => {
       const matchesSearch =
-        searchQuery.trim() === "" ||
-        o.order_number.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesStatus =
-        statusFilter === "all" || o.status === statusFilter;
+        q.trim() === "" ||
+        o.order_number.toLowerCase().includes(q.toLowerCase());
+      const matchesStatus = status === "all" || o.status === status;
       const oDate = new Date(o.created_at);
-      const matchesFrom = dateFrom === "" || oDate >= new Date(dateFrom);
-      const matchesTo = dateTo === "" || oDate <= new Date(dateTo + "T23:59:59");
-      const matchesMin = minAmount === "" || o.total >= parseInt(minAmount) * 100;
-      const matchesMax = maxAmount === "" || o.total <= parseInt(maxAmount) * 100;
+      const matchesFrom = from === "" || oDate >= new Date(from);
+      const matchesTo = to === "" || oDate <= new Date(to + "T23:59:59");
+      const matchesMin = min === "" || o.total >= parseInt(min) * 100;
+      const matchesMax = max === "" || o.total <= parseInt(max) * 100;
       return matchesSearch && matchesStatus && matchesFrom && matchesTo && matchesMin && matchesMax;
     });
 
     return [...filtered].sort((a, b) => {
-      switch (sortBy) {
+      switch (sort) {
         case "date-desc":
           return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
         case "date-asc":
@@ -114,24 +123,33 @@ function OrdersPage() {
           return 0;
       }
     });
-  }, [orders, searchQuery, statusFilter, dateFrom, dateTo, minAmount, maxAmount, sortBy]);
+  }, [orders, q, status, from, to, min, max, sort]);
 
   const hasActiveFilters =
-    statusFilter !== "all" ||
-    dateFrom !== "" ||
-    dateTo !== "" ||
-    minAmount !== "" ||
-    maxAmount !== "" ||
-    searchQuery.trim() !== "";
+    status !== "all" ||
+    from !== "" ||
+    to !== "" ||
+    min !== "" ||
+    max !== "" ||
+    q.trim() !== "";
 
   const clearFilters = () => {
-    setSearchQuery("");
-    setStatusFilter("all");
-    setDateFrom("");
-    setDateTo("");
-    setMinAmount("");
-    setMaxAmount("");
-    setSortBy("date-desc");
+    filterNavigate({
+      search: (prev) => ({
+        ...prev,
+        sort: "date-desc",
+        q: "",
+        status: "all",
+        from: "",
+        to: "",
+        min: "",
+        max: "",
+      }),
+    });
+  };
+
+  const updateSearch = (patch: Partial<z.infer<typeof searchSchema>>) => {
+    filterNavigate({ search: (prev) => ({ ...prev, ...patch }) });
   };
 
   if (authLoading || !user) {
@@ -155,20 +173,20 @@ function OrdersPage() {
               <Input
                 type="text"
                 placeholder="Rechercher par n° de commande…"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={q}
+                onChange={(e) => updateSearch({ q: e.target.value })}
                 className="pl-9"
               />
-              {searchQuery && (
+              {q && (
                 <button
-                  onClick={() => setSearchQuery("")}
+                  onClick={() => updateSearch({ q: "" })}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                 >
                   <X className="h-4 w-4" />
                 </button>
               )}
             </div>
-            <Select value={sortBy} onValueChange={setSortBy}>
+            <Select value={sort} onValueChange={(value) => updateSearch({ sort: value as z.infer<typeof sortEnum> })}>
               <SelectTrigger className="w-full sm:w-[220px] gap-2">
                 <ArrowUpDown className="h-4 w-4 text-muted-foreground shrink-0" />
                 <SelectValue placeholder="Trier par…" />
@@ -188,9 +206,9 @@ function OrdersPage() {
               Filtres
               {hasActiveFilters && (
                 <span className="ml-1 inline-flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[10px] text-primary-foreground">
-                  {(statusFilter !== "all" ? 1 : 0) +
-                    (dateFrom !== "" || dateTo !== "" ? 1 : 0) +
-                    (minAmount !== "" || maxAmount !== "" ? 1 : 0)}
+                  {(status !== "all" ? 1 : 0) +
+                    (from !== "" || to !== "" ? 1 : 0) +
+                    (min !== "" || max !== "" ? 1 : 0)}
                 </span>
               )}
             </Button>
@@ -201,7 +219,7 @@ function OrdersPage() {
             <div className="bg-card border border-border rounded-md p-4 shadow-soft grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               <div>
                 <label className="text-xs uppercase tracking-widest text-muted-foreground mb-1 block">Statut</label>
-                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <Select value={status} onValueChange={(value) => updateSearch({ status: value })}>
                   <SelectTrigger className="w-full">
                     <SelectValue placeholder="Tous les statuts" />
                   </SelectTrigger>
@@ -215,11 +233,11 @@ function OrdersPage() {
               </div>
               <div>
                 <label className="text-xs uppercase tracking-widest text-muted-foreground mb-1 block">Date (du)</label>
-                <Input type="date" value={dateFrom} onChange={(e) => setDateFrom(e.target.value)} />
+                <Input type="date" value={from} onChange={(e) => updateSearch({ from: e.target.value })} />
               </div>
               <div>
                 <label className="text-xs uppercase tracking-widest text-muted-foreground mb-1 block">Date (au)</label>
-                <Input type="date" value={dateTo} onChange={(e) => setDateTo(e.target.value)} />
+                <Input type="date" value={to} onChange={(e) => updateSearch({ to: e.target.value })} />
               </div>
               <div>
                 <label className="text-xs uppercase tracking-widest text-muted-foreground mb-1 block">Montant (FCFA)</label>
@@ -228,8 +246,8 @@ function OrdersPage() {
                     type="number"
                     min={0}
                     placeholder="Min"
-                    value={minAmount}
-                    onChange={(e) => setMinAmount(e.target.value)}
+                    value={min}
+                    onChange={(e) => updateSearch({ min: e.target.value })}
                     className="flex-1"
                   />
                   <span className="text-muted-foreground">–</span>
@@ -237,8 +255,8 @@ function OrdersPage() {
                     type="number"
                     min={0}
                     placeholder="Max"
-                    value={maxAmount}
-                    onChange={(e) => setMaxAmount(e.target.value)}
+                    value={max}
+                    onChange={(e) => updateSearch({ max: e.target.value })}
                     className="flex-1"
                   />
                 </div>
