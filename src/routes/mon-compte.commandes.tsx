@@ -135,7 +135,7 @@ function OrdersPage() {
 
   const clearFilters = () => {
     filterNavigate({
-      search: (prev) => ({
+      search: (prev: z.infer<typeof searchSchema>) => ({
         ...prev,
         sort: "date-desc",
         q: "",
@@ -149,7 +149,7 @@ function OrdersPage() {
   };
 
   const updateSearch = (patch: Partial<z.infer<typeof searchSchema>>) => {
-    filterNavigate({ search: (prev) => ({ ...prev, ...patch }) });
+    filterNavigate({ search: (prev: z.infer<typeof searchSchema>) => ({ ...prev, ...patch }) });
   };
 
   if (authLoading || !user) {
