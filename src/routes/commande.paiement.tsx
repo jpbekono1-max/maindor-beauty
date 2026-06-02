@@ -66,11 +66,13 @@ function PaiementPage() {
       });
       setOrderNumber(orderNumber);
       if (state.payment === "whatsapp") {
+        const origin = typeof window !== "undefined" ? window.location.origin : "";
+        const toAbs = (u: string) => (u.startsWith("http") ? u : `${origin}${u}`);
         const lines = [
           `Bonjour Main d'or Beauty 👋`,
           `Commande ${orderNumber}`,
           ``,
-          ...items.map((i, idx) => `${idx + 1}. ${i.name} × ${i.qty} — ${formatFCFA(i.price * i.qty)}`),
+          ...items.map((i, idx) => `${idx + 1}. ${i.name} × ${i.qty} — ${formatFCFA(i.price * i.qty)}\n   📸 ${toAbs(i.image)}`),
           ``,
           `Sous-total : ${formatFCFA(subtotal)}`,
           promo ? `Promo ${promo.code} : − ${formatFCFA(promo.amount)}` : null,

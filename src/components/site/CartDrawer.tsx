@@ -8,6 +8,8 @@ export function CartDrawer() {
 
   if (!open) return null;
 
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const toAbs = (u: string) => (u.startsWith("http") ? u : `${origin}${u}`);
   const waLines = [
     `Bonjour Main d'or Beauty 👋`,
     `Je souhaite confirmer ma commande :`,
@@ -18,7 +20,7 @@ export function CartDrawer() {
         i.length ? `longueur ${i.length}` : null,
         i.density ? `densité ${i.density}` : null,
       ].filter(Boolean).join(", ");
-      return `${idx + 1}. ${i.name}${opts ? ` (${opts})` : ""} × ${i.qty} — ${formatFCFA(i.price * i.qty)}`;
+      return `${idx + 1}. ${i.name}${opts ? ` (${opts})` : ""} × ${i.qty} — ${formatFCFA(i.price * i.qty)}\n   📸 ${toAbs(i.image)}`;
     }),
     ``,
     `💰 Total : ${formatFCFA(total)}`,
