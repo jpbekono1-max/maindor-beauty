@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/site/PageHeader";
 import { SectionTitle } from "@/components/site/SectionTitle";
-import { Award, Heart, Sparkles, ShieldCheck } from "lucide-react";
+import { Award, Heart, Sparkles, ShieldCheck, Star, Quote } from "lucide-react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import founderAsset from "@/assets/founder-martine.png.asset.json";
 const founder = founderAsset.url;
 import training from "@/assets/training.jpg";
@@ -26,6 +27,19 @@ const team = [
   { name: "Linda Atangana", role: "Cheffe Coiffeuse Mariage", specialty: "Coiffure & maquillage bridal", img: bridal },
   { name: "Solange Ndjock", role: "Formatrice Senior", specialty: "Pose lace & confection", img: training },
 ];
+
+const testimonials: { name: string; city: string; rating: number; text: string }[] = [
+  { name: "Aminata Mballa", city: "Yaoundé", rating: 5, text: "Ma lace frontal est d'une finition incroyable, on dirait mes vrais cheveux. Service haut de gamme du début à la fin !" },
+  { name: "Carole Mengue", city: "Douala", rating: 5, text: "J'ai fait ma coiffure de mariage chez Main d'or Beauty. Toutes mes invitées m'ont complimentée. Merci à toute l'équipe ❤️" },
+  { name: "Sandra Owono", city: "Yaoundé", rating: 5, text: "Livraison rapide et perruque conforme aux photos. Je recommande à 1000% pour la qualité." },
+  { name: "Estelle Fokou", city: "Bafoussam", rating: 4, text: "Très belle perruque, densité parfaite. Petit délai sur la livraison hors Yaoundé mais le résultat en valait la peine." },
+  { name: "Jocelyne Biya", city: "Yaoundé", rating: 5, text: "Formation pose de lace au top ! Martine est pédagogue et exigeante. J'ai gagné en confiance pour mes clientes." },
+  { name: "Murielle Kamga", city: "Douala", rating: 5, text: "Nail art impeccable et conseil personnalisé. L'expérience boutique est vraiment luxueuse." },
+];
+
+function initials(name: string) {
+  return name.split(" ").map(p => p[0]).slice(0, 2).join("").toUpperCase();
+}
 
 function AboutPage() {
   return (
@@ -82,6 +96,34 @@ function AboutPage() {
                   <p className="text-sm text-muted-foreground mt-2">{m.specialty}</p>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 md:py-28 bg-muted/40">
+        <div className="container mx-auto px-4">
+          <SectionTitle eyebrow="Témoignages" title="Ce que disent nos clientes"/>
+          <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {testimonials.map(t => (
+              <article key={t.name} className="relative p-7 bg-card border border-border rounded-md hover:shadow-luxe transition">
+                <Quote className="absolute top-5 right-5 h-8 w-8 opacity-10" style={{color:"var(--gold-dark)"}}/>
+                <div className="flex items-center gap-4">
+                  <Avatar className="h-12 w-12">
+                    <AvatarFallback className="bg-gradient-gold text-secondary font-display">{initials(t.name)}</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <p className="font-display text-base leading-tight">{t.name}</p>
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground mt-0.5">{t.city}</p>
+                  </div>
+                </div>
+                <div className="mt-4 flex gap-0.5" aria-label={`${t.rating} sur 5`}>
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className={`h-4 w-4 ${i < t.rating ? "fill-current" : "opacity-30"}`} style={{color:"var(--gold-dark)"}}/>
+                  ))}
+                </div>
+                <p className="mt-4 text-sm text-muted-foreground leading-relaxed">"{t.text}"</p>
+              </article>
             ))}
           </div>
         </div>
