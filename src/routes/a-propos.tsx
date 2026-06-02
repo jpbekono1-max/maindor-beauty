@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHeader } from "@/components/site/PageHeader";
 import { SectionTitle } from "@/components/site/SectionTitle";
 import { Award, Heart, Sparkles, ShieldCheck } from "lucide-react";
-import founderAsset from "@/assets/founder-new.png.asset.json";
+import founderAsset from "@/assets/founder-martine.png.asset.json";
 const founder = founderAsset.url;
 import training from "@/assets/training.jpg";
 import bridal from "@/assets/bridal.jpg";
@@ -22,7 +22,7 @@ const values = [
 ];
 
 const team = [
-  { name: "Marie-Claire Mbarga", role: "Fondatrice & Directrice Artistique", specialty: "Confection sur mesure", img: founder },
+  { name: "Ntono Bekono Martine Fissy", role: "Fondatrice & Directrice Artistique", specialty: "Confection sur mesure", img: founder },
   { name: "Linda Atangana", role: "Cheffe Coiffeuse Mariage", specialty: "Coiffure & maquillage bridal", img: bridal },
   { name: "Solange Ndjock", role: "Formatrice Senior", specialty: "Pose lace & confection", img: training },
 ];
@@ -37,7 +37,7 @@ function AboutPage() {
             <p className="text-xs uppercase tracking-[0.4em]" style={{color:"var(--gold-dark)"}}>Notre Histoire</p>
             <h2 className="font-display text-4xl md:text-5xl mt-3">L'Histoire de <span className="text-gradient-gold italic">Main d'or</span> Beauty</h2>
             <span className="block mt-5 h-px w-16 bg-gradient-gold"/>
-            <p className="mt-6 text-muted-foreground leading-relaxed">Née à Yaoundé en 2017 d'une passion pour le cheveu et l'élégance africaine, Main d'or Beauty est aujourd'hui une référence en perruques confectionnées, coiffure mariage et formations professionnelles au Cameroun.</p>
+            <p className="mt-6 text-muted-foreground leading-relaxed">Née à Yaoundé en 2017 d'une passion pour les cheveux et l'élégance africaine, Main d'or Beauty est aujourd'hui une référence en perruques confectionnées, coiffure mariage et formations professionnelles au Cameroun.</p>
             <p className="mt-4 text-muted-foreground leading-relaxed">Notre mission : sublimer chaque femme à travers un savoir-faire artisanal exigeant, des matières premium et un accompagnement personnalisé.</p>
             <div className="mt-8 grid grid-cols-3 gap-6 border-t border-border pt-8">
               <div><div className="font-display text-3xl text-gradient-gold">2017</div><div className="text-xs uppercase tracking-widest text-muted-foreground mt-1">Fondation</div></div>
