@@ -42,7 +42,11 @@ function ProductPage() {
   );
 
   const total = product.price * qty;
+  const origin = typeof window !== "undefined" ? window.location.origin : "";
+  const imageAbs = product.image.startsWith("http") ? product.image : `${origin}${product.image}`;
   const waLines = [
+    imageAbs,
+    ``,
     `Bonjour Main d'or Beauty 👋`,
     `Je souhaite commander :`,
     ``,
